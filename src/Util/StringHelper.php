@@ -274,6 +274,7 @@ class StringHelper
     public static function isLatinString($string)
     {
         return boolval(preg_match_all("/^[\p{Latin}\p{Common}]+$/u", $string));
+        //return !$noLatin;
     }
 
     /**
