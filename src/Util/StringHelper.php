@@ -11,7 +11,12 @@
 namespace Seboettg\CiteProc\Util;
 
 use Seboettg\CiteProc\CiteProc;
-use Symfony\Polyfill\Mbstring\Mbstring;
+use function mb_detect_encoding;
+use function mb_strlen;
+use function mb_strpos;
+use function mb_strtolower;
+use function mb_strtoupper;
+use function mb_substr;
 
 /**
  * Class StringHelper
@@ -92,7 +97,7 @@ class StringHelper
     public static function capitalizeForTitle($titleString)
     {
         if (preg_match('/(.+[^\<\>][\.:\/;\?\!]\s?)([a-z])(.+)/', $titleString, $match)) {
-            $titleString = $match[1].StringHelper::mb_ucfirst($match[2]).$match[3];
+            $titleString = $match[1] . StringHelper::ucfirst($match[2]) . $match[3];
         }
 
         $wordArray = explode(" ", $titleString);
@@ -101,11 +106,11 @@ class StringHelper
             $words = explode("-", $word);
             if (count($words) > 1) {
                 array_walk($words, function (&$w) {
-                    $w = StringHelper::keepLowerCase($w) ? $w : StringHelper::mb_ucfirst($w);
+                    $w = StringHelper::keepLowerCase($w) ? $w : StringHelper::ucfirst($w);
                 });
                 $word = implode("-", $words);
             }
-            $word = StringHelper::keepLowerCase($word) ? $word : StringHelper::mb_ucfirst($word);
+            $word = StringHelper::keepLowerCase($word) ? $word : StringHelper::ucfirst($word);
         });
 
         return implode(" ", $wordArray);
@@ -130,19 +135,19 @@ class StringHelper
      * @param string $encoding
      * @return string
      */
-    public static function mb_ucfirst($string, $encoding = 'UTF-8')
+    public static function ucfirst($string, $encoding = 'UTF-8')
     {
         $strlen = mb_strlen($string, $encoding);
         $firstChar = mb_substr($string, 0, 1, $encoding);
         $then = mb_substr($string, 1, $strlen - 1, $encoding);
 
         /** @noinspection PhpInternalEntityUsedInspection */
-        $encoding = Mbstring::mb_detect_encoding($firstChar, self::ISO_ENCODINGS, true);
+        $encoding = mb_detect_encoding($firstChar, self::ISO_ENCODINGS, true);
         return in_array($encoding, self::ISO_ENCODINGS) ?
-            Mbstring::mb_strtoupper($firstChar, $encoding).$then : $firstChar.$then;
+            mb_strtoupper($firstChar, $encoding) . $then : $firstChar.$then;
     }
 
-    public static function mb_strrev($string)
+    public static function strrev($string)
     {
         $result = '';
         for ($i = mb_strlen($string); $i >= 0; --$i) {
@@ -161,7 +166,7 @@ class StringHelper
         $delim = trim($delimiter);
         if (!empty($delim)) {
             foreach ($arrayOfStrings as $key => $textPart) {
-                $pos = mb_strpos(StringHelper::mb_strrev($textPart), StringHelper::mb_strrev($delim));
+                $pos = mb_strpos(StringHelper::strrev($textPart), StringHelper::strrev($delim));
                 if ($pos === 0) {
                     $length = mb_strlen($textPart) - mb_strlen($delim);
                     $textPart = mb_substr($textPart, 0, $length);
@@ -208,7 +213,7 @@ class StringHelper
     public static function camelCase2Hyphen($string)
     {
         $hyphenated = preg_replace("/([A-Z])/", "-$1", $string);
-        $hyphenated = substr($hyphenated, 0, 1) === "-" ? substr($hyphenated, 1) : $hyphenated;
+        $hyphenated = mb_substr($hyphenated, 0, 1) === "-" ? mb_substr($hyphenated, 1) : $hyphenated;
         return mb_strtolower($hyphenated);
     }
 
@@ -269,7 +274,6 @@ class StringHelper
     public static function isLatinString($string)
     {
         return boolval(preg_match_all("/^[\p{Latin}\p{Common}]+$/u", $string));
-        //return !$noLatin;
     }
 
     /**

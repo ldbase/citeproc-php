@@ -11,6 +11,8 @@ namespace Seboettg\CiteProc\Styles;
 
 use Seboettg\CiteProc\CiteProc;
 use SimpleXMLElement;
+use function mb_strlen;
+use function mb_substr;
 
 /**
  * Trait AffixesTrait

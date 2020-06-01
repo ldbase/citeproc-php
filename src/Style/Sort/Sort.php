@@ -16,6 +16,7 @@ use Seboettg\CiteProc\Util\DateHelper;
 use Seboettg\CiteProc\Util\Variables;
 use Seboettg\Collection\ArrayList;
 use SimpleXMLElement;
+use function mb_strtolower;
 
 /**
  * Class Sort

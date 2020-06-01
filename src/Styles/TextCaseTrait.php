@@ -11,6 +11,8 @@ namespace Seboettg\CiteProc\Styles;
 
 use Seboettg\CiteProc\Util\StringHelper;
 use SimpleXMLElement;
+use function mb_strtolower;
+use function mb_strtoupper;
 
 /**
  * Trait TextCase
@@ -27,9 +29,6 @@ trait TextCaseTrait
     protected function initTextCaseAttributes(SimpleXMLElement $node)
     {
         foreach ($node->attributes() as $attribute) {
-            /**
-             * @var string $name
-             */
             $name = $attribute->getName();
             $value = (string) $attribute;
 
@@ -59,9 +58,9 @@ trait TextCaseTrait
             case 'sentence':
                 if (StringHelper::checkUpperCaseString($text)) {
                     $text = mb_strtolower($text);
-                    return StringHelper::mb_ucfirst($text);
+                    return StringHelper::ucfirst($text);
                 } else {
-                    return StringHelper::mb_ucfirst($text);
+                    return StringHelper::ucfirst($text);
                 }
                 break;
             case 'capitalize-all':
@@ -73,7 +72,7 @@ trait TextCaseTrait
                 }
                 break;
             case 'capitalize-first':
-                $text = $this->keepNoCase(StringHelper::mb_ucfirst($text), $text);
+                $text = $this->keepNoCase(StringHelper::ucfirst($text), $text);
                 break;
             default:
                 break;
