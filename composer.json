@@ -1,18 +1,7 @@
 {
-    "name": "seboettg/citeproc-php",
+    "name": "ldbase/citeproc-php",
     "description": "Full-featured CSL processor (https://citationstyles.org)",
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Sebastian Böttger",
-            "email": "seboettg@gmail.com",
-            "homepage": "http://sebastianboettger.net",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "issues": "https://github.com/seboettg/citeproc-php/issues"
-    },
     "autoload": {
         "psr-4": {
             "Seboettg\\CiteProc\\": "src/"
